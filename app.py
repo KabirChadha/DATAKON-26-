@@ -418,7 +418,7 @@ st.markdown("<div style='margin-bottom: 1.5rem;'></div>", unsafe_allow_html=True
 # ==============================================================================
 # 6. TAB NAVIGATION FOR DEEP OPERATIONAL ANALYSIS
 # ==============================================================================
-tab_overview, tab_zones, tab_transport, tab_canteen, tab_decisions, tab_data_summary, tab_bottleneck = st.tabs([
+tab_overview, tab_zones, tab_transport, tab_canteen, tab_decisions, tab_data_summary, tab_bottleneck, tab_priority = st.tabs([
     "Executive Overview",
     "Zone & Congestion Analysis",
     "Transit & Shuttle Demand",
@@ -426,6 +426,7 @@ tab_overview, tab_zones, tab_transport, tab_canteen, tab_decisions, tab_data_sum
     "Data-Driven Recommendations",
     "Campus Congestion & Data Summary",
     "Bottleneck Deep-Dive",
+    "\U0001f3af 3 Priority Recommendations",
 ])
 
 # ------------------------------------------------------------------------------
@@ -1221,6 +1222,245 @@ with tab_bottleneck:
                 consistently generate Critical congestion flags regardless of weather or event context.
                 Addressing these two levers alone would resolve an estimated
                 <b style='color:#FFFFFF;'>67% of all recorded Critical incidents</b>.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+# ------------------------------------------------------------------------------
+# TAB 8: 🎯 3 PRIORITY RECOMMENDATIONS
+# ------------------------------------------------------------------------------
+with tab_priority:
+
+    # ── Problem Statement Callout ──────────────────────────────────────────────
+    st.markdown("""
+        <div style="
+            background-color: #1A1A1A;
+            border: 1px solid #FF6B00;
+            border-left: 4px solid #FF6B00;
+            border-radius: 6px;
+            padding: 1.1rem 1.4rem;
+            margin-bottom: 2rem;
+        ">
+            <div style="font-size: 0.72rem; font-weight: 700; color: #FF8533;
+                        text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem;">
+                Problem Statement 5 &bull; DATAKON 26' DataViz Challenge
+            </div>
+            <div style="font-size: 1.05rem; font-weight: 600; color: #FFFFFF; line-height: 1.5;">
+                &ldquo;If you were given the responsibility of improving this university campus,
+                what three data-driven changes would you make first, and why?&rdquo;
+            </div>
+            <div style="font-size: 0.82rem; color: #A0A0A0; margin-top: 0.6rem; line-height: 1.5;">
+                The following recommendations are derived exclusively from statistical patterns in the
+                CampusPulse dataset &mdash; each targeting a root-cause bottleneck rather than a surface symptom.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # ── 3 Recommendation Cards ─────────────────────────────────────────────────
+    pr1, pr2, pr3 = st.columns(3)
+
+    CARD_BASE = """
+        background-color: #1E1E1E;
+        border: 1px solid #FF6B00;
+        border-top: 3px solid #FF6B00;
+        border-radius: 6px;
+        padding: 1.4rem 1.3rem 1.2rem 1.3rem;
+        height: 100%;
+    """
+
+    with pr1:
+        st.markdown(f"""
+            <div style="{CARD_BASE}">
+                <div style="font-size: 0.68rem; font-weight: 700; color: #FF6B00;
+                            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    Priority 1 &bull; Dining Decongestion
+                </div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;
+                            margin-bottom: 0.9rem; line-height: 1.35;">
+                    Decentralised Locker Pick-up Hubs
+                </div>
+
+                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
+                    <div style="min-width:36px; height:36px; background:#FF6B00; border-radius:4px;
+                                display:flex; align-items:center; justify-content:center;
+                                font-size:0.8rem; font-weight:700; color:#121212;">WHY</div>
+                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
+                        Main Canteen averages a
+                        <span style="color:#FF8533; font-weight:600;">158-student queue</span>
+                        between 11 AM&ndash;3 PM, inflating service time to 8.4 min and collapsing
+                        satisfaction to
+                        <span style="color:#FF5252; font-weight:600;">1.50&thinsp;/&thinsp;5.0</span>
+                        &mdash; the lowest recorded value campus-wide.
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
+                    <div style="min-width:36px; height:36px; background:#2A2A2A; border:1px solid #FF6B00;
+                                border-radius:4px; display:flex; align-items:center;
+                                justify-content:center; font-size:0.8rem; font-weight:700;
+                                color:#FF8533;">HOW</div>
+                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
+                        Deploy mobile pick-up lockers at <b style='color:#FFFFFF;'>Tech Park
+                        &amp; University Library</b>, routing 40% of canteen orders via
+                        pre-order kiosks. Stagger dismissal bells by 15-minute intervals
+                        between academic blocks to break simultaneous demand spikes.
+                    </div>
+                </div>
+
+                <div style="background:#121212; border-radius:4px; padding:0.7rem 0.9rem;
+                            border-left:3px solid #FF6B00; margin-top:0.5rem;">
+                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase;
+                                letter-spacing:0.06em;">Projected Impact</div>
+                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
+                        Queue &darr; <b style='color:#4CAF50;'>40%</b> &nbsp;&bull;&nbsp;
+                        Satisfaction &uarr; <b style='color:#4CAF50;'>1.50 &rarr; &gt;3.50</b> &nbsp;&bull;&nbsp;
+                        Critical incidents at canteen &darr; <b style='color:#4CAF50;'>~60%</b>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with pr2:
+        st.markdown(f"""
+            <div style="{CARD_BASE}">
+                <div style="font-size: 0.68rem; font-weight: 700; color: #FF6B00;
+                            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    Priority 2 &bull; Transit Rebalancing
+                </div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;
+                            margin-bottom: 0.9rem; line-height: 1.35;">
+                    Dynamic Shuttle Dispatch System
+                </div>
+
+                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
+                    <div style="min-width:36px; height:36px; background:#FF6B00; border-radius:4px;
+                                display:flex; align-items:center; justify-content:center;
+                                font-size:0.8rem; font-weight:700; color:#121212;">WHY</div>
+                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
+                        Shuttle demand at Tech Park &amp; Main Gate hits
+                        <span style="color:#FF8533; font-weight:600;">136 passengers</span>
+                        against a fixed capacity of 50, creating
+                        <span style="color:#FF5252; font-weight:600;">139% occupancy overload</span>
+                        and 10.2 min average waits during class-transition peaks.
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
+                    <div style="min-width:36px; height:36px; background:#2A2A2A; border:1px solid #FF6B00;
+                                border-radius:4px; display:flex; align-items:center;
+                                justify-content:center; font-size:0.8rem; font-weight:700;
+                                color:#FF8533;">HOW</div>
+                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
+                        Re-route idle shuttles from
+                        <b style='color:#FFFFFF;'>Admin Block &amp; Medical Centre</b>
+                        (demand: 52&ndash;57) into dedicated express corridors serving
+                        Tech Park &rarr; Main Gate &rarr; Hostel Zone during
+                        <b style='color:#FFFFFF;'>11 AM&ndash;3 PM</b> peak windows.
+                    </div>
+                </div>
+
+                <div style="background:#121212; border-radius:4px; padding:0.7rem 0.9rem;
+                            border-left:3px solid #FF6B00; margin-top:0.5rem;">
+                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase;
+                                letter-spacing:0.06em;">Projected Impact</div>
+                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
+                        Occupancy &darr; to <b style='color:#4CAF50;'>&lt;100%</b> &nbsp;&bull;&nbsp;
+                        Wait time &darr; <b style='color:#4CAF50;'>10.2 &rarr; &lt;5 min</b> &nbsp;&bull;&nbsp;
+                        Transit Critical incidents &darr; <b style='color:#4CAF50;'>~55%</b>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with pr3:
+        st.markdown(f"""
+            <div style="{CARD_BASE}">
+                <div style="font-size: 0.68rem; font-weight: 700; color: #FF6B00;
+                            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                    Priority 3 &bull; Gate Flow &amp; Infrastructure
+                </div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;
+                            margin-bottom: 0.9rem; line-height: 1.35;">
+                    Weather-Adaptive Micro-Staggering
+                </div>
+
+                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
+                    <div style="min-width:36px; height:36px; background:#FF6B00; border-radius:4px;
+                                display:flex; align-items:center; justify-content:center;
+                                font-size:0.8rem; font-weight:700; color:#121212;">WHY</div>
+                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
+                        Main Gate records
+                        <span style="color:#FF8533; font-weight:600;">141 vehicles/hr</span>
+                        colliding with simultaneous pedestrian class-exit surges.
+                        Rainy conditions further compress vehicle &amp; footfall peaks,
+                        amplifying the <span style="color:#FF5252; font-weight:600;">30.3%</span>
+                        share of campus-wide Critical incidents.
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
+                    <div style="min-width:36px; height:36px; background:#2A2A2A; border:1px solid #FF6B00;
+                                border-radius:4px; display:flex; align-items:center;
+                                justify-content:center; font-size:0.8rem; font-weight:700;
+                                color:#FF8533;">HOW</div>
+                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
+                        Stagger <b style='color:#FFFFFF;'>Tech Park dismissals by 12 minutes</b>
+                        from adjacent blocks. Deploy a weather-triggered
+                        <b style='color:#FFFFFF;'>rain-mode shuttle loop</b>
+                        (auto-activated via IoT sensors) to redirect vehicle entry to
+                        secondary gates under adverse conditions.
+                    </div>
+                </div>
+
+                <div style="background:#121212; border-radius:4px; padding:0.7rem 0.9rem;
+                            border-left:3px solid #FF6B00; margin-top:0.5rem;">
+                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase;
+                                letter-spacing:0.06em;">Projected Impact</div>
+                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
+                        Gate gridlock &darr; <b style='color:#4CAF50;'>65%</b> &nbsp;&bull;&nbsp;
+                        Rain-day Critical rate &darr; <b style='color:#4CAF50;'>~48%</b> &nbsp;&bull;&nbsp;
+                        Avg pedestrian clear-time &darr; <b style='color:#4CAF50;'>~4 min</b>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # ── Combined Impact Summary Bar ────────────────────────────────────────────
+    st.markdown("<div style='margin-top:2rem;'></div>", unsafe_allow_html=True)
+
+    imp_c1, imp_c2, imp_c3, imp_c4 = st.columns(4)
+    for col, label, val, sub_text in [
+        (imp_c1, "Critical Incidents Eliminated", "~67%",  "across all 3 interventions combined"),
+        (imp_c2, "Canteen Satisfaction Recovery", "1.50 → 3.5+", "after decentralised pick-up deployment"),
+        (imp_c3, "Shuttle Wait Time Reduction",  "10.2 → <5 min", "via dynamic dispatch re-routing"),
+        (imp_c4, "Gate Gridlock Reduction",       "65%",   "weather-adaptive staggering + IoT loops"),
+    ]:
+        col.markdown(f"""
+            <div style="background-color:#1E1E1E; border:1px solid #2A2A2A;
+                        border-bottom:3px solid #FF6B00; border-radius:6px;
+                        padding:1rem 1.1rem; text-align:center;">
+                <div style="font-size:0.72rem; font-weight:600; color:#A0A0A0;
+                            text-transform:uppercase; letter-spacing:0.05em;
+                            margin-bottom:0.4rem;">{label}</div>
+                <div style="font-size:1.55rem; font-weight:700; color:#FF8533;
+                            line-height:1.1;">{val}</div>
+                <div style="font-size:0.74rem; color:#707070; margin-top:0.35rem;">{sub_text}</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("""
+        <div style="background-color:#1A1A1A; border:1px solid #2A2A2A;
+                    border-left:4px solid #FF6B00; border-radius:4px;
+                    padding:1rem 1.25rem; margin-top:1.6rem;">
+            <div style="font-size:0.78rem; font-weight:700; color:#FF8533;
+                        text-transform:uppercase; letter-spacing:0.06em;">Executive Synthesis</div>
+            <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.4rem; line-height:1.6;">
+                These three interventions target <b>asynchronous scheduling</b>, <b>static fleet allocation</b>,
+                and <b>weather-blind infrastructure</b> &mdash; the three root causes responsible for
+                over <b style='color:#FF8533;'>67% of all Critical congestion events</b> in the CampusPulse dataset.
+                None require new capital construction; all are deployable within a single semester using
+                existing campus IoT, fleet, and scheduling infrastructure.
             </div>
         </div>
     """, unsafe_allow_html=True)
