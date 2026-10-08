@@ -198,9 +198,111 @@ div[data-baseweb="slider"] {
     color: #FF6B00 !important;
     border-bottom: 2px solid #FF6B00 !important;
 }
+
+/* Rocket Launch Animation */
+@keyframes rocketLaunch {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    40% {
+        transform: translateY(-120px) scale(1.15);
+        opacity: 1;
+    }
+    80% {
+        transform: translateY(-320px) scale(0.9);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-500px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes particleGlow {
+    0% {
+        box-shadow: 0 0 8px 2px rgba(255, 107, 0, 0.6),
+                    0 0 20px 6px rgba(255, 107, 0, 0.3);
+        opacity: 1;
+    }
+    50% {
+        box-shadow: 0 0 16px 8px rgba(255, 133, 51, 0.8),
+                    0 0 40px 16px rgba(255, 107, 0, 0.4),
+                    0 0 60px 24px rgba(255, 82, 82, 0.2);
+        opacity: 0.9;
+    }
+    100% {
+        box-shadow: 0 0 4px 1px rgba(255, 107, 0, 0.2);
+        opacity: 0;
+    }
+}
+
+@keyframes overlayFade {
+    0%   { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
+}
+
+.rocket-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    pointer-events: none;
+    animation: overlayFade 3.5s ease-out forwards;
+}
+
+.rocket-icon {
+    font-size: 4rem;
+    animation: rocketLaunch 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    filter: drop-shadow(0 0 12px rgba(255, 107, 0, 0.7));
+}
+
+.rocket-particles {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FF6B00 0%, #FF8533 40%, transparent 70%);
+    animation: particleGlow 2.5s ease-out forwards;
+}
+
+.rocket-particles:nth-child(2) {
+    animation-delay: 0.15s;
+    transform: translateX(-12px) translateY(20px);
+}
+
+.rocket-particles:nth-child(3) {
+    animation-delay: 0.3s;
+    transform: translateX(12px) translateY(20px);
+}
+
+.rocket-particles:nth-child(4) {
+    animation-delay: 0.45s;
+    transform: translateX(-6px) translateY(35px);
+}
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+
+# Rocket Launch Animation — fires once on initial page load
+if 'rocket_launched' not in st.session_state:
+    st.session_state.rocket_launched = True
+    st.toast("🚀 SRMIST CampusPulse Operations System Loaded!", icon="🚀")
+    st.markdown("""
+        <div class="rocket-overlay">
+            <div class="rocket-particles"></div>
+            <div class="rocket-particles"></div>
+            <div class="rocket-particles"></div>
+            <div class="rocket-particles"></div>
+            <div class="rocket-icon">🚀</div>
+        </div>
+    """, unsafe_allow_html=True)
 
 # Standard Plotly Theme Configurations
 PLOTLY_LAYOUT_DEFAULTS = dict(
