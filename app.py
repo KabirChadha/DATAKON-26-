@@ -173,6 +173,75 @@ section[data-testid="stSidebar"] {
     padding-top: 0.6rem;
 }
 
+/* Priority Recommendation Cards */
+.priority-card {
+    background-color: #1E1E1E;
+    border: 1px solid #FF6B00;
+    border-top: 3px solid #FF6B00;
+    border-radius: 6px;
+    padding: 1.4rem 1.3rem 1.2rem 1.3rem;
+    height: 100%;
+    box-sizing: border-box;
+}
+.priority-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #FF6B00;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+.priority-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 0.9rem;
+    line-height: 1.35;
+}
+.priority-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin-bottom: 0.75rem;
+}
+.priority-badge-why {
+    min-width: 36px;
+    height: 36px;
+    background: #FF6B00;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #121212;
+}
+.priority-badge-how {
+    min-width: 36px;
+    height: 36px;
+    background: #2A2A2A;
+    border: 1px solid #FF6B00;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #FF8533;
+}
+.priority-text {
+    font-size: 0.82rem;
+    color: #C0C0C0;
+    line-height: 1.55;
+}
+.priority-impact-box {
+    background: #121212;
+    border-radius: 4px;
+    padding: 0.7rem 0.9rem;
+    border-left: 3px solid #FF6B00;
+    margin-top: 0.5rem;
+}
+
 /* Streamlit Widget Overrides */
 div[data-baseweb="select"] > div {
     background-color: #1E1E1E !important;
@@ -520,15 +589,12 @@ st.markdown("<div style='margin-bottom: 1.5rem;'></div>", unsafe_allow_html=True
 # ==============================================================================
 # 6. TAB NAVIGATION FOR DEEP OPERATIONAL ANALYSIS
 # ==============================================================================
-tab_overview, tab_zones, tab_transport, tab_canteen, tab_decisions, tab_data_summary, tab_bottleneck, tab_priority = st.tabs([
+tab_overview, tab_zones, tab_transport, tab_canteen, tab_strategy = st.tabs([
     "Executive Overview",
     "Zone & Congestion Analysis",
     "Transit & Shuttle Demand",
     "Dining Queue Dynamics",
-    "Data-Driven Recommendations",
-    "Campus Congestion & Data Summary",
-    "Bottleneck Deep-Dive",
-    "\U0001f3af 3 Priority Recommendations",
+    "🎯 Strategic Recommendations & Live Simulator",
 ])
 
 # ------------------------------------------------------------------------------
@@ -932,636 +998,28 @@ with tab_canteen:
         st.plotly_chart(fig_decay, use_container_width=True)
 
 # ------------------------------------------------------------------------------
-# TAB 5: DATA-DRIVEN STRATEGIC RECOMMENDATIONS
+# TAB 5: 🎯 STRATEGIC RECOMMENDATIONS & LIVE SIMULATOR
 # ------------------------------------------------------------------------------
-with tab_decisions:
-    st.markdown("""
-        <div style="margin-bottom: 1.25rem;">
-            <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;">
-                CampusPulse Strategic Interventions
-            </div>
-            <div style="font-size: 0.85rem; color: #A0A0A0; margin-top: 0.2rem;">
-                Addressing the core challenge: <i>"If you were given the responsibility of improving this university campus, what three data-driven changes would you make first, and why?"</i>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    rec_col1, rec_col2, rec_col3 = st.columns(3)
-
-    with rec_col1:
-        st.markdown("""
-            <div class="decision-card">
-                <div class="decision-badge">Pillar 1 &bull; Dining & Retail</div>
-                <div class="decision-title">Staggered Class Slots & Pre-Order Kiosks</div>
-                <div class="decision-body">
-                    <b>The Evidence:</b> Main Canteen accounts for <b>36.9% of all critical incidents</b> campus-wide. Between 11:00 AM and 3:00 PM, average queues exceed <b>175 persons</b>, inflating service times past 8.3 minutes and driving student satisfaction down to a critical low of <b>1.22 / 5.0</b>.
-                    <br><br>
-                    <b>The Intervention:</b> Implement mobile pre-order pickup stations and desynchronize academic block transition bells by 15-minute staggered intervals between Tech Park and Admin/Library blocks.
-                </div>
-                <div class="decision-meta">
-                    <b>Target Impact:</b> 40% queue reduction; recovery of satisfaction from 1.22 to ~3.2.
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    with rec_col2:
-        st.markdown("""
-            <div class="decision-card">
-                <div class="decision-badge">Pillar 2 &bull; Transit & Fleet</div>
-                <div class="decision-title">Dynamic High-Capacity Shuttle Reallocation</div>
-                <div class="decision-body">
-                    <b>The Evidence:</b> Shuttle demand at Main Gate and Tech Park averages <b>136 passengers</b> against an inflexible nominal capacity of <b>50 seats</b>, resulting in <b>139% occupancy overload</b> and ~10.2 min average wait times.
-                    <br><br>
-                    <b>The Intervention:</b> Shift underutilized shuttle capacity from low-strain zones (Medical Centre: 52 demand; Sports Complex: 55 demand) into dedicated express corridors connecting Main Gate &bull; Tech Park &bull; Hostels during the 09:00–10:30 and 16:00–17:30 peak windows.
-                </div>
-                <div class="decision-meta">
-                    <b>Target Impact:</b> Eliminate 140%+ over-capacity runs; reduce transit wait times under 5 mins.
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    with rec_col3:
-        st.markdown("""
-            <div class="decision-card">
-                <div class="decision-badge">Pillar 3 &bull; Infrastructure</div>
-                <div class="decision-title">Transit Corridor Segregation & Gate Flow</div>
-                <div class="decision-body">
-                    <b>The Evidence:</b> Main Gate accounts for <b>30.3% of critical congestion</b>, compounded by an average vehicle volume of <b>119 vehicles/slot</b> clashing directly with pedestrian flows during class transitions.
-                    <br><br>
-                    <b>The Intervention:</b> Establish dedicated pedestrian-only express lanes and automated barrier-free RFID entry gates for faculty/delivery vehicles to prevent vehicle-pedestrian collision bottlenecks at Main Gate.
-                </div>
-                <div class="decision-meta">
-                    <b>Target Impact:</b> 65% reduction in gate choke-points during peak morning entry.
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("<div style='margin-top: 1.5rem;'></div>", unsafe_allow_html=True)
-
-    # Executive Summary Quote Box
-    st.markdown("""
-        <div style="background-color: #1E1E1E; border: 1px solid #2A2A2A; border-left: 3px solid #FF6B00; border-radius: 4px; padding: 1rem 1.25rem;">
-            <div style="font-size: 0.82rem; font-weight: 700; color: #FF8533; text-transform: uppercase; letter-spacing: 0.05em;">Synthesis</div>
-            <div style="font-size: 0.88rem; color: #FFFFFF; margin-top: 0.3rem; line-height: 1.5;">
-                Campus congestion at SRMIST is not an intractable capacity shortage, but an <b>asynchronous scheduling and spatial distribution mismatch</b>. By synchronizing transit fleet deployment with class transition peaks and decentralizing dining order flows, the campus can eliminate over 70% of critical incidents without major capital expenditure.
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-# ------------------------------------------------------------------------------
-# TAB 6: CAMPUS CONGESTION & DATA SUMMARY
-# ------------------------------------------------------------------------------
-with tab_data_summary:
-
-    # ── Dataset Integrity & Health Report ─────────────────────────────────────
-    with st.expander("📋 Dataset Integrity & Health Report", expanded=True):
-        total_raw = len(df_raw)
-        total_filtered = len(filtered_df)
-        imputed_weather = 96
-        imputed_sat     = 120
-        imputed_veh     = 72
-        crit_pct  = round((filtered_df['Congestion_Level'] == 'Critical').mean() * 100, 1)
-        high_pct  = round((filtered_df['Congestion_Level'] == 'High').mean()     * 100, 1)
-        mod_pct   = round((filtered_df['Congestion_Level'] == 'Moderate').mean() * 100, 1)
-        low_pct   = round((filtered_df['Congestion_Level'] == 'Low').mean()      * 100, 1)
-
-        ic1, ic2, ic3, ic4, ic5 = st.columns(5)
-        for col, label, val, sub in [
-            (ic1, "Total Logs",        f"{total_raw:,}",        "full dataset"),
-            (ic2, "Active Scope",      f"{total_filtered:,}",   "post-filter"),
-            (ic3, "Weather Imputed",   f"{imputed_weather}",    "filled → 'Clear'"),
-            (ic4, "Satisfaction Fixed",f"{imputed_sat}",        "filled → median"),
-            (ic5, "Vehicle Imputed",   f"{imputed_veh}",        "filled → median"),
-        ]:
-            col.markdown(f"""
-                <div class="kpi-container accent-border">
-                    <div class="kpi-label">{label}</div>
-                    <div class="kpi-value" style="font-size:1.5rem;">{val}</div>
-                    <div class="kpi-subtext">{sub}</div>
-                </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("<div style='margin-top:1rem;'></div>", unsafe_allow_html=True)
-
-        stat_cols = ['Student_Footfall','Vehicle_Count','Shuttle_Demand',
-                     'Shuttle_Occupancy_Pct','Canteen_Queue_Length',
-                     'Avg_Shuttle_Wait_Min','Student_Satisfaction']
-        summary_df = filtered_df[stat_cols].describe().round(2).T
-        summary_df.index.name = "Metric"
-        st.dataframe(summary_df, use_container_width=True)
-
-    st.markdown("<div style='margin:1.2rem 0 0.4rem 0; font-size:0.88rem; font-weight:600; color:#FFFFFF;'>"
-                "Congestion Level Breakdown by Zone</div>", unsafe_allow_html=True)
-    st.markdown("<div style='font-size:0.78rem; color:#A0A0A0; margin-bottom:0.8rem;'>"
-                "Stacked horizontal bars — proportional share of each severity tier per campus zone</div>",
-                unsafe_allow_html=True)
-
-    # ── Stacked horizontal bar: Congestion_Level x Zone ───────────────────────
-    level_order = ['Low', 'Moderate', 'High', 'Critical']
-    cong_zone = (
-        filtered_df.groupby(['Zone', 'Congestion_Level'])
-        .size()
-        .reset_index(name='Count')
-    )
-    cong_zone_pct = cong_zone.copy()
-    totals = cong_zone.groupby('Zone')['Count'].transform('sum')
-    cong_zone_pct['Pct'] = (cong_zone['Count'] / totals * 100).round(1)
-
-    cong_color_map = {
-        'Low':      '#1B5E20',
-        'Moderate': '#F9A825',
-        'High':     '#E64A19',
-        'Critical': '#FF4500',
-    }
-
-    fig_cong_zone = px.bar(
-        cong_zone_pct,
-        x='Pct',
-        y='Zone',
-        color='Congestion_Level',
-        orientation='h',
-        barmode='stack',
-        category_orders={'Congestion_Level': level_order},
-        color_discrete_map=cong_color_map,
-        text='Pct',
-        labels={'Pct': 'Share (%)', 'Zone': '', 'Congestion_Level': 'Severity'},
-        template='plotly_dark',
-    )
-    fig_cong_zone.update_traces(
-        texttemplate='%{text:.0f}%',
-        textposition='inside',
-        insidetextanchor='middle',
-        textfont=dict(size=10, color='#FFFFFF'),
-    )
-    fig_cong_zone.update_layout(
-        paper_bgcolor='#1E1E1E',
-        plot_bgcolor='#1E1E1E',
-        font=dict(family='Inter, sans-serif', color='#FFFFFF', size=11),
-        margin=dict(l=10, r=20, t=20, b=30),
-        height=360,
-        xaxis=dict(range=[0, 100], ticksuffix='%', gridcolor='#2A2A2A'),
-        yaxis=dict(categoryorder='total ascending', gridcolor='#2A2A2A'),
-        legend=dict(orientation='h', y=1.06, x=0.5, xanchor='center',
-                    font=dict(size=10), bgcolor='#1E1E1E'),
-    )
-    st.plotly_chart(fig_cong_zone, use_container_width=True)
-
-    # ── Dual-line time series: Footfall & Vehicle_Count across campus day ──────
-    st.markdown("<div style='margin:1.2rem 0 0.4rem 0; font-size:0.88rem; font-weight:600; color:#FFFFFF;'>"
-                "Hourly Footfall & Vehicle Activity</div>", unsafe_allow_html=True)
-    st.markdown("<div style='font-size:0.78rem; color:#A0A0A0; margin-bottom:0.8rem;'>"
-                "Orange = Student Footfall &nbsp;|&nbsp; Grey = Vehicle Count — averaged per hour across the active filter</div>",
-                unsafe_allow_html=True)
-
-    hourly_ts = filtered_df.groupby('Hour').agg(
-        Avg_Footfall=('Student_Footfall',  'mean'),
-        Avg_Vehicles=('Vehicle_Count', 'mean'),
-    ).reset_index()
-
-    fig_ts = go.Figure()
-    fig_ts.add_trace(go.Scatter(
-        x=hourly_ts['Hour'], y=hourly_ts['Avg_Footfall'],
-        name='Student Footfall',
-        mode='lines+markers',
-        line=dict(color='#FF6B00', width=2.5),
-        marker=dict(size=7, color='#FF6B00'),
-        fill='tozeroy',
-        fillcolor='rgba(255,107,0,0.08)',
-    ))
-    fig_ts.add_trace(go.Scatter(
-        x=hourly_ts['Hour'], y=hourly_ts['Avg_Vehicles'],
-        name='Vehicle Count',
-        mode='lines+markers',
-        line=dict(color='#E0E0E0', width=2, dash='dot'),
-        marker=dict(size=6, color='#E0E0E0'),
-    ))
-    fig_ts.update_layout(
-        template='plotly_dark',
-        paper_bgcolor='#1E1E1E',
-        plot_bgcolor='#1E1E1E',
-        font=dict(family='Inter, sans-serif', color='#FFFFFF', size=11),
-        margin=dict(l=40, r=20, t=20, b=40),
-        height=300,
-        xaxis=dict(title='Hour of Day', dtick=1, gridcolor='#2A2A2A'),
-        yaxis=dict(title='Average Count', gridcolor='#2A2A2A'),
-        legend=dict(orientation='h', y=1.08, x=0.5, xanchor='center'),
-    )
-    st.plotly_chart(fig_ts, use_container_width=True)
-
-
-# ------------------------------------------------------------------------------
-# TAB 7: BOTTLENECK DEEP-DIVE & STATISTICAL INSIGHTS
-# ------------------------------------------------------------------------------
-with tab_bottleneck:
-
-    # ── Correlation callout boxes ──────────────────────────────────────────────
-    canteen_sub = df_raw[df_raw['Zone'] == 'Main Canteen'].dropna(
-        subset=['Canteen_Queue_Length', 'Student_Satisfaction'])
-    r_canteen = canteen_sub['Canteen_Queue_Length'].corr(
-        canteen_sub['Student_Satisfaction'])
-
-    shuttle_sub = df_raw.dropna(subset=['Shuttle_Occupancy_Pct', 'Avg_Shuttle_Wait_Min'])
-    r_shuttle = shuttle_sub['Shuttle_Occupancy_Pct'].corr(
-        shuttle_sub['Avg_Shuttle_Wait_Min'])
-
-    bc1, bc2, bc3 = st.columns([1.4, 1.4, 1.2])
-
-    with bc1:
-        st.markdown(f"""
-            <div class="kpi-container accent-border" style="border-left-color:#FF4500;">
-                <div class="kpi-label">Queue → Satisfaction Correlation</div>
-                <div class="kpi-value" style="color:#FF8533;">r = {r_canteen:.3f}</div>
-                <div class="kpi-subtext">
-                    Strong negative relationship — every additional <b>10-person queue</b>
-                    predicts a <b>~0.08 drop</b> in satisfaction score.
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    with bc2:
-        st.markdown(f"""
-            <div class="kpi-container accent-border" style="border-left-color:#FF8533;">
-                <div class="kpi-label">Occupancy → Wait Time Correlation</div>
-                <div class="kpi-value" style="color:#FF8533;">r = {r_shuttle:.3f}</div>
-                <div class="kpi-subtext">
-                    Strong positive relationship — shuttles running at <b>&gt;130% capacity</b>
-                    show <b>2.4× longer</b> average wait times vs. balanced loads.
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    with bc3:
-        st.markdown("""
-            <div class="kpi-container" style="background:#1E1E1E; border:1px solid #2A2A2A;">
-                <div class="kpi-label" style="color:#FF6B00;">Interpretation Key</div>
-                <div style="font-size:0.8rem; color:#C0C0C0; line-height:1.6; margin-top:0.3rem;">
-                    |r| &gt; 0.80 &nbsp;→&nbsp; <b style='color:#FF4500;'>Strong</b><br>
-                    |r| 0.60–0.80 → <b style='color:#F9A825;'>Moderate</b><br>
-                    |r| &lt; 0.40 &nbsp;→&nbsp; <b style='color:#A0A0A0;'>Weak</b>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("<div style='margin-bottom:1.4rem;'></div>", unsafe_allow_html=True)
-
-    bot_col1, bot_col2 = st.columns([1.35, 1.65])
-
-    # ── Scatter: Canteen Queue vs Satisfaction + orange OLS trendline ──────────
-    with bot_col1:
-        st.markdown("""
-            <div class="content-panel">
-                <div class="panel-heading">Canteen Queue vs. Student Satisfaction</div>
-                <div class="panel-subheading">Main Canteen records — orange OLS regression line</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        canteen_plot = canteen_sub.sample(min(600, len(canteen_sub)), random_state=7)
-        fig_corr = px.scatter(
-            canteen_plot,
-            x='Canteen_Queue_Length',
-            y='Student_Satisfaction',
-            opacity=0.55,
-            color_discrete_sequence=['#FF6B00'],
-            labels={'Canteen_Queue_Length': 'Queue Length (persons)',
-                    'Student_Satisfaction': 'Student Satisfaction (1–5)'},
-            template='plotly_dark',
-        )
-
-        # Orange OLS trendline via polyfit
-        if len(canteen_plot) > 1:
-            m_c, b_c = np.polyfit(
-                canteen_plot['Canteen_Queue_Length'],
-                canteen_plot['Student_Satisfaction'], 1)
-            xq = np.linspace(canteen_plot['Canteen_Queue_Length'].min(),
-                             canteen_plot['Canteen_Queue_Length'].max(), 80)
-            fig_corr.add_trace(go.Scatter(
-                x=xq, y=m_c * xq + b_c,
-                mode='lines', name='OLS Trend',
-                line=dict(color='#FF4500', width=2.5),
-                showlegend=True,
-            ))
-
-        fig_corr.update_layout(
-            paper_bgcolor='#1E1E1E', plot_bgcolor='#1E1E1E',
-            font=dict(family='Inter, sans-serif', color='#FFFFFF', size=11),
-            margin=dict(l=40, r=20, t=20, b=40),
-            height=380,
-            xaxis=dict(gridcolor='#2A2A2A'),
-            yaxis=dict(gridcolor='#2A2A2A'),
-            legend=dict(font=dict(size=10), bgcolor='#1E1E1E'),
-        )
-        st.plotly_chart(fig_corr, use_container_width=True)
-
-    # ── Grouped bar: Shuttle Demand vs Capacity by Zone ───────────────────────
-    with bot_col2:
-        st.markdown("""
-            <div class="content-panel">
-                <div class="panel-heading">Shuttle Demand vs Capacity by Zone</div>
-                <div class="panel-subheading">Orange bars = actual demand &nbsp;|&nbsp; Dashed line = nominal capacity ceiling</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        shuttle_zone_agg = filtered_df.groupby('Zone').agg(
-            Avg_Demand=('Shuttle_Demand', 'mean'),
-            Avg_Capacity=('Shuttle_Capacity', 'mean'),
-        ).reset_index().sort_values('Avg_Demand', ascending=False)
-
-        fig_sh_vs = go.Figure()
-        fig_sh_vs.add_trace(go.Bar(
-            x=shuttle_zone_agg['Zone'],
-            y=shuttle_zone_agg['Avg_Demand'],
-            name='Shuttle Demand',
-            marker_color='#FF6B00',
-        ))
-        fig_sh_vs.add_trace(go.Bar(
-            x=shuttle_zone_agg['Zone'],
-            y=shuttle_zone_agg['Avg_Capacity'],
-            name='Shuttle Capacity',
-            marker_color='#3A3A3A',
-            marker_line=dict(color='#A0A0A0', width=1.5),
-        ))
-
-        # Capacity threshold reference line
-        nominal_cap = shuttle_zone_agg['Avg_Capacity'].median()
-        fig_sh_vs.add_hline(
-            y=nominal_cap,
-            line_dash='dash',
-            line_color='#FFFFFF',
-            line_width=1.5,
-            annotation_text=f'Median Capacity ({nominal_cap:.0f})',
-            annotation_position='top right',
-            annotation_font_color='#A0A0A0',
-            annotation_font_size=10,
-        )
-
-        fig_sh_vs.update_layout(
-            template='plotly_dark',
-            paper_bgcolor='#1E1E1E',
-            plot_bgcolor='#1E1E1E',
-            font=dict(family='Inter, sans-serif', color='#FFFFFF', size=11),
-            margin=dict(l=20, r=20, t=20, b=80),
-            height=380,
-            barmode='group',
-            bargap=0.25,
-            xaxis=dict(tickangle=-30, gridcolor='#2A2A2A'),
-            yaxis=dict(title='Avg Passengers / Slot', gridcolor='#2A2A2A'),
-            legend=dict(orientation='h', y=1.08, x=0.5, xanchor='center',
-                        font=dict(size=10), bgcolor='#1E1E1E'),
-        )
-        st.plotly_chart(fig_sh_vs, use_container_width=True)
-
-    # ── Data Insight Summary ───────────────────────────────────────────────────
-    st.markdown("""
-        <div style="background-color:#1E1E1E; border:1px solid #2A2A2A; border-left:3px solid #FF4500;
-                    border-radius:4px; padding:1rem 1.25rem; margin-top:0.5rem;">
-            <div style="font-size:0.8rem; font-weight:700; color:#FF8533; text-transform:uppercase;
-                        letter-spacing:0.05em;">Statistical Insights Summary</div>
-            <div style="font-size:0.85rem; color:#C0C0C0; margin-top:0.5rem; line-height:1.6;">
-                The CampusPulse dataset reveals two statistically robust bottleneck drivers:
-                <b style='color:#FF6B00;'>dining queue congestion</b> (r = -0.84 with satisfaction)
-                and <b style='color:#FF6B00;'>shuttle capacity deficit</b> (r = +0.84 with wait times).
-                Campus zones with demand exceeding 2.5× nominal shuttle capacity
-                consistently generate Critical congestion flags regardless of weather or event context.
-                Addressing these two levers alone would resolve an estimated
-                <b style='color:#FFFFFF;'>67% of all recorded Critical incidents</b>.
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-
-# ------------------------------------------------------------------------------
-# TAB 8: 🎯 3 PRIORITY RECOMMENDATIONS
-# ------------------------------------------------------------------------------
-with tab_priority:
+with tab_strategy:
 
     # ── Problem Statement Callout ──────────────────────────────────────────────
     st.markdown("""
-        <div style="
-            background-color: #1A1A1A;
-            border: 1px solid #FF6B00;
-            border-left: 4px solid #FF6B00;
-            border-radius: 6px;
-            padding: 1.1rem 1.4rem;
-            margin-bottom: 2rem;
-        ">
-            <div style="font-size: 0.72rem; font-weight: 700; color: #FF8533;
-                        text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem;">
+        <div style="background-color: #1A1A1A; border: 1px solid #FF6B00; border-left: 4px solid #FF6B00; border-radius: 6px; padding: 1.1rem 1.4rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.72rem; font-weight: 700; color: #FF8533; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem;">
                 Problem Statement 5 &bull; DATAKON 26' DataViz Challenge
             </div>
             <div style="font-size: 1.05rem; font-weight: 600; color: #FFFFFF; line-height: 1.5;">
-                &ldquo;If you were given the responsibility of improving this university campus,
-                what three data-driven changes would you make first, and why?&rdquo;
+                &ldquo;If you were given the responsibility of improving this university campus, what three data-driven changes would you make first, and why?&rdquo;
             </div>
-            <div style="font-size: 0.82rem; color: #A0A0A0; margin-top: 0.6rem; line-height: 1.5;">
-                The following recommendations are derived exclusively from statistical patterns in the
-                CampusPulse dataset &mdash; each targeting a root-cause bottleneck rather than a surface symptom.
+            <div style="font-size: 0.82rem; color: #A0A0A0; margin-top: 0.5rem; line-height: 1.5;">
+                Simulate targeted operational interventions in real-time below, supported by statistical bottleneck evidence and root-cause strategic pillars.
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # ── 3 Recommendation Cards ─────────────────────────────────────────────────
-    pr1, pr2, pr3 = st.columns(3)
-
-    CARD_BASE = """
-        background-color: #1E1E1E;
-        border: 1px solid #FF6B00;
-        border-top: 3px solid #FF6B00;
-        border-radius: 6px;
-        padding: 1.4rem 1.3rem 1.2rem 1.3rem;
-        height: 100%;
-    """
-
-    with pr1:
-        st.markdown(f"""
-            <div style="{CARD_BASE}">
-                <div style="font-size: 0.68rem; font-weight: 700; color: #FF6B00;
-                            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                    Priority 1 &bull; Dining Decongestion
-                </div>
-                <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;
-                            margin-bottom: 0.9rem; line-height: 1.35;">
-                    Decentralised Locker Pick-up Hubs
-                </div>
-
-                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
-                    <div style="min-width:36px; height:36px; background:#FF6B00; border-radius:4px;
-                                display:flex; align-items:center; justify-content:center;
-                                font-size:0.8rem; font-weight:700; color:#121212;">WHY</div>
-                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
-                        Main Canteen averages a
-                        <span style="color:#FF8533; font-weight:600;">158-student queue</span>
-                        between 11 AM&ndash;3 PM, inflating service time to 8.4 min and collapsing
-                        satisfaction to
-                        <span style="color:#FF5252; font-weight:600;">1.50&thinsp;/&thinsp;5.0</span>
-                        &mdash; the lowest recorded value campus-wide.
-                    </div>
-                </div>
-
-                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
-                    <div style="min-width:36px; height:36px; background:#2A2A2A; border:1px solid #FF6B00;
-                                border-radius:4px; display:flex; align-items:center;
-                                justify-content:center; font-size:0.8rem; font-weight:700;
-                                color:#FF8533;">HOW</div>
-                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
-                        Deploy mobile pick-up lockers at <b style='color:#FFFFFF;'>Tech Park
-                        &amp; University Library</b>, routing 40% of canteen orders via
-                        pre-order kiosks. Stagger dismissal bells by 15-minute intervals
-                        between academic blocks to break simultaneous demand spikes.
-                    </div>
-                </div>
-
-                <div style="background:#121212; border-radius:4px; padding:0.7rem 0.9rem;
-                            border-left:3px solid #FF6B00; margin-top:0.5rem;">
-                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase;
-                                letter-spacing:0.06em;">Projected Impact</div>
-                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
-                        Queue &darr; <b style='color:#4CAF50;'>40%</b> &nbsp;&bull;&nbsp;
-                        Satisfaction &uarr; <b style='color:#4CAF50;'>1.50 &rarr; &gt;3.50</b> &nbsp;&bull;&nbsp;
-                        Critical incidents at canteen &darr; <b style='color:#4CAF50;'>~60%</b>
-                    </div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    with pr2:
-        st.markdown(f"""
-            <div style="{CARD_BASE}">
-                <div style="font-size: 0.68rem; font-weight: 700; color: #FF6B00;
-                            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                    Priority 2 &bull; Transit Rebalancing
-                </div>
-                <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;
-                            margin-bottom: 0.9rem; line-height: 1.35;">
-                    Dynamic Shuttle Dispatch System
-                </div>
-
-                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
-                    <div style="min-width:36px; height:36px; background:#FF6B00; border-radius:4px;
-                                display:flex; align-items:center; justify-content:center;
-                                font-size:0.8rem; font-weight:700; color:#121212;">WHY</div>
-                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
-                        Shuttle demand at Tech Park &amp; Main Gate hits
-                        <span style="color:#FF8533; font-weight:600;">136 passengers</span>
-                        against a fixed capacity of 50, creating
-                        <span style="color:#FF5252; font-weight:600;">139% occupancy overload</span>
-                        and 10.2 min average waits during class-transition peaks.
-                    </div>
-                </div>
-
-                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
-                    <div style="min-width:36px; height:36px; background:#2A2A2A; border:1px solid #FF6B00;
-                                border-radius:4px; display:flex; align-items:center;
-                                justify-content:center; font-size:0.8rem; font-weight:700;
-                                color:#FF8533;">HOW</div>
-                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
-                        Re-route idle shuttles from
-                        <b style='color:#FFFFFF;'>Admin Block &amp; Medical Centre</b>
-                        (demand: 52&ndash;57) into dedicated express corridors serving
-                        Tech Park &rarr; Main Gate &rarr; Hostel Zone during
-                        <b style='color:#FFFFFF;'>11 AM&ndash;3 PM</b> peak windows.
-                    </div>
-                </div>
-
-                <div style="background:#121212; border-radius:4px; padding:0.7rem 0.9rem;
-                            border-left:3px solid #FF6B00; margin-top:0.5rem;">
-                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase;
-                                letter-spacing:0.06em;">Projected Impact</div>
-                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
-                        Occupancy &darr; to <b style='color:#4CAF50;'>&lt;100%</b> &nbsp;&bull;&nbsp;
-                        Wait time &darr; <b style='color:#4CAF50;'>10.2 &rarr; &lt;5 min</b> &nbsp;&bull;&nbsp;
-                        Transit Critical incidents &darr; <b style='color:#4CAF50;'>~55%</b>
-                    </div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    with pr3:
-        st.markdown(f"""
-            <div style="{CARD_BASE}">
-                <div style="font-size: 0.68rem; font-weight: 700; color: #FF6B00;
-                            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
-                    Priority 3 &bull; Gate Flow &amp; Infrastructure
-                </div>
-                <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;
-                            margin-bottom: 0.9rem; line-height: 1.35;">
-                    Weather-Adaptive Micro-Staggering
-                </div>
-
-                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
-                    <div style="min-width:36px; height:36px; background:#FF6B00; border-radius:4px;
-                                display:flex; align-items:center; justify-content:center;
-                                font-size:0.8rem; font-weight:700; color:#121212;">WHY</div>
-                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
-                        Main Gate records
-                        <span style="color:#FF8533; font-weight:600;">141 vehicles/hr</span>
-                        colliding with simultaneous pedestrian class-exit surges.
-                        Rainy conditions further compress vehicle &amp; footfall peaks,
-                        amplifying the <span style="color:#FF5252; font-weight:600;">30.3%</span>
-                        share of campus-wide Critical incidents.
-                    </div>
-                </div>
-
-                <div style="display:flex; align-items:flex-start; gap:0.7rem; margin-bottom:0.75rem;">
-                    <div style="min-width:36px; height:36px; background:#2A2A2A; border:1px solid #FF6B00;
-                                border-radius:4px; display:flex; align-items:center;
-                                justify-content:center; font-size:0.8rem; font-weight:700;
-                                color:#FF8533;">HOW</div>
-                    <div style="font-size:0.82rem; color:#C0C0C0; line-height:1.55;">
-                        Stagger <b style='color:#FFFFFF;'>Tech Park dismissals by 12 minutes</b>
-                        from adjacent blocks. Deploy a weather-triggered
-                        <b style='color:#FFFFFF;'>rain-mode shuttle loop</b>
-                        (auto-activated via IoT sensors) to redirect vehicle entry to
-                        secondary gates under adverse conditions.
-                    </div>
-                </div>
-
-                <div style="background:#121212; border-radius:4px; padding:0.7rem 0.9rem;
-                            border-left:3px solid #FF6B00; margin-top:0.5rem;">
-                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase;
-                                letter-spacing:0.06em;">Projected Impact</div>
-                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
-                        Gate gridlock &darr; <b style='color:#4CAF50;'>65%</b> &nbsp;&bull;&nbsp;
-                        Rain-day Critical rate &darr; <b style='color:#4CAF50;'>~48%</b> &nbsp;&bull;&nbsp;
-                        Avg pedestrian clear-time &darr; <b style='color:#4CAF50;'>~4 min</b>
-                    </div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    # ── Combined Impact Summary Bar ────────────────────────────────────────────
-    st.markdown("<div style='margin-top:2rem;'></div>", unsafe_allow_html=True)
-
-    imp_c1, imp_c2, imp_c3, imp_c4 = st.columns(4)
-    for col, label, val, sub_text in [
-        (imp_c1, "Critical Incidents Eliminated", "~67%",  "across all 3 interventions combined"),
-        (imp_c2, "Canteen Satisfaction Recovery", "1.50 → 3.5+", "after decentralised pick-up deployment"),
-        (imp_c3, "Shuttle Wait Time Reduction",  "10.2 → <5 min", "via dynamic dispatch re-routing"),
-        (imp_c4, "Gate Gridlock Reduction",       "65%",   "weather-adaptive staggering + IoT loops"),
-    ]:
-        col.markdown(f"""
-            <div style="background-color:#1E1E1E; border:1px solid #2A2A2A;
-                        border-bottom:3px solid #FF6B00; border-radius:6px;
-                        padding:1rem 1.1rem; text-align:center;">
-                <div style="font-size:0.72rem; font-weight:600; color:#A0A0A0;
-                            text-transform:uppercase; letter-spacing:0.05em;
-                            margin-bottom:0.4rem;">{label}</div>
-                <div style="font-size:1.55rem; font-weight:700; color:#FF8533;
-                            line-height:1.1;">{val}</div>
-                <div style="font-size:0.74rem; color:#707070; margin-top:0.35rem;">{sub_text}</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    # ── 🎛️ Live Operational Impact Simulator ───────────────────────────────────
-    st.markdown("<div style='margin-top:2.5rem;'></div>", unsafe_allow_html=True)
+    # ── 🎛️ Live Operational Impact Simulator (Positioned at Top) ───────────────
     st.markdown("""
-        <div style="
-            background-color: #1A1A1A;
-            border: 1px solid #2A2A2A;
-            border-top: 3px solid #FF6B00;
-            border-radius: 6px;
-            padding: 1.2rem 1.4rem 0.8rem 1.4rem;
-            margin-bottom: 1.5rem;
-        ">
+        <div style="background-color: #1A1A1A; border: 1px solid #2A2A2A; border-top: 3px solid #FF6B00; border-radius: 6px; padding: 1.2rem 1.4rem 0.8rem 1.4rem; margin-bottom: 1.2rem;">
             <div style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.3rem;">
                 🎛️ Live Operational Impact Simulator
             </div>
@@ -1573,7 +1031,7 @@ with tab_priority:
 
     sim_left, sim_right = st.columns([1, 1.2])
 
-    # ── Baseline values from the filtered dataset ──────────────────────────────
+    # Baseline values from the filtered dataset
     baseline_canteen_queue = filtered_df['Canteen_Queue_Length'].mean()
     baseline_service_time  = filtered_df['Avg_Service_Time_Min'].mean()
     baseline_shuttle_wait  = filtered_df['Avg_Shuttle_Wait_Min'].mean()
@@ -1583,21 +1041,19 @@ with tab_priority:
     # Regression coefficients derived from dataset correlations:
     #   r = -0.841  →  canteen queue vs satisfaction
     #   r = +0.838  →  shuttle occupancy vs wait time
-    # Using standardised regression weights:
     sat_std   = filtered_df['Student_Satisfaction'].std()
     queue_std = filtered_df['Canteen_Queue_Length'].std()
     occ_std   = filtered_df['Shuttle_Occupancy_Pct'].std()
     wait_std  = filtered_df['Avg_Shuttle_Wait_Min'].std()
 
-    # β (unstandardised): β = r * (σ_y / σ_x)
     beta_queue_to_sat  = -0.841 * (sat_std / max(queue_std, 0.01))
     beta_occ_to_wait   =  0.838 * (wait_std / max(occ_std, 0.01))
 
     with sim_left:
         st.markdown("""
-            <div style="font-size: 0.78rem; font-weight: 600; color: #FF8533;
-                        text-transform: uppercase; letter-spacing: 0.06em;
-                        margin-bottom: 0.8rem;">Control Panel</div>
+            <div style="font-size: 0.78rem; font-weight: 600; color: #FF8533; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.8rem;">
+                Control Panel
+            </div>
         """, unsafe_allow_html=True)
 
         sim_diversion_pct = st.slider(
@@ -1626,44 +1082,36 @@ with tab_priority:
             help="Simulated weather scenario affecting congestion dynamics"
         )
 
-    # ── Compute projected metrics ──────────────────────────────────────────────
-    # Canteen: diverting X% reduces effective queue by that fraction
+    # Compute projected metrics
     projected_queue        = baseline_canteen_queue * (1 - sim_diversion_pct / 100)
-    queue_delta            = projected_queue - baseline_canteen_queue  # negative = improvement
+    queue_delta            = projected_queue - baseline_canteen_queue
     projected_service_time = max(1.0, baseline_service_time * (1 - sim_diversion_pct / 100 * 0.75))
 
-    # Shuttle: each reallocated shuttle adds ~50 seats of capacity,
-    # reducing effective occupancy percentage
     capacity_boost_pct     = (sim_shuttles_added * 50) / max(1, filtered_df['Shuttle_Capacity'].mean()) * 100
     projected_occ          = max(30.0, baseline_shuttle_occ - capacity_boost_pct)
-    occ_delta              = projected_occ - baseline_shuttle_occ  # negative = improvement
+    occ_delta              = projected_occ - baseline_shuttle_occ
     projected_shuttle_wait = max(1.0, baseline_shuttle_wait + beta_occ_to_wait * occ_delta)
 
-    # Weather modifier
     weather_modifier = {"Clear": 0.0, "Hot": -0.08, "Rainy": -0.18}
     weather_wait_mod = {"Clear": 0.0, "Hot": 0.4, "Rainy": 1.2}
     weather_svc_mod  = {"Clear": 0.0, "Hot": 0.2, "Rainy": 0.5}
 
-    # Overall satisfaction projection
     projected_satisfaction = (
         baseline_satisfaction
         + beta_queue_to_sat * queue_delta
         + weather_modifier.get(sim_weather, 0.0)
     )
     projected_satisfaction = round(min(5.0, max(0.0, projected_satisfaction)), 2)
-
-    # Apply weather mods to wait / service times
     projected_shuttle_wait = round(max(1.0, projected_shuttle_wait + weather_wait_mod.get(sim_weather, 0.0)), 1)
     projected_service_time = round(max(1.0, projected_service_time + weather_svc_mod.get(sim_weather, 0.0)), 1)
 
     with sim_right:
         st.markdown("""
-            <div style="font-size: 0.78rem; font-weight: 600; color: #FF8533;
-                        text-transform: uppercase; letter-spacing: 0.06em;
-                        margin-bottom: 0.8rem;">Projected Outcomes</div>
+            <div style="font-size: 0.78rem; font-weight: 600; color: #FF8533; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.8rem;">
+                Projected Outcomes
+            </div>
         """, unsafe_allow_html=True)
 
-        # Metric cards row
         mc1, mc2, mc3 = st.columns(3)
 
         svc_color = "#4CAF50" if projected_service_time < baseline_service_time else "#FF5252"
@@ -1700,7 +1148,7 @@ with tab_priority:
                 </div>
             """, unsafe_allow_html=True)
 
-        # ── Plotly Gauge Chart ─────────────────────────────────────────────────
+        # Plotly Gauge Chart
         fig_gauge = go.Figure(go.Indicator(
             mode="gauge+number+delta",
             value=projected_satisfaction,
@@ -1755,21 +1203,387 @@ with tab_priority:
         )
         st.plotly_chart(fig_gauge, use_container_width=True)
 
+    # ── Combined Impact Summary Bar ────────────────────────────────────────────
+    st.markdown("<div style='margin-top:1.5rem;'></div>", unsafe_allow_html=True)
+    imp_c1, imp_c2, imp_c3, imp_c4 = st.columns(4)
+    for col, label, val, sub_text in [
+        (imp_c1, "Critical Incidents Eliminated", "~67%",  "across all 3 interventions combined"),
+        (imp_c2, "Canteen Satisfaction Recovery", "1.50 → 3.5+", "after decentralised pick-up deployment"),
+        (imp_c3, "Shuttle Wait Time Reduction",  "10.2 → <5 min", "via dynamic dispatch re-routing"),
+        (imp_c4, "Gate Gridlock Reduction",       "65%",   "weather-adaptive staggering + IoT loops"),
+    ]:
+        col.markdown(f"""
+            <div style="background-color:#1E1E1E; border:1px solid #2A2A2A; border-bottom:3px solid #FF6B00; border-radius:6px; padding:1rem 1.1rem; text-align:center;">
+                <div style="font-size:0.72rem; font-weight:600; color:#A0A0A0; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.4rem;">{label}</div>
+                <div style="font-size:1.55rem; font-weight:700; color:#FF8533; line-height:1.1;">{val}</div>
+                <div style="font-size:0.74rem; color:#707070; margin-top:0.35rem;">{sub_text}</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # ── 3 Priority Recommendation Cards ────────────────────────────────────────
     st.markdown("""
-        <div style="background-color:#1A1A1A; border:1px solid #2A2A2A;
-                    border-left:4px solid #FF6B00; border-radius:4px;
-                    padding:1rem 1.25rem; margin-top:1.6rem;">
-            <div style="font-size:0.78rem; font-weight:700; color:#FF8533;
-                        text-transform:uppercase; letter-spacing:0.06em;">Executive Synthesis</div>
+        <div style="margin-top: 2rem; margin-bottom: 0.9rem;">
+            <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;">🎯 3 Priority Root-Cause Interventions</div>
+            <div style="font-size: 0.82rem; color: #A0A0A0; margin-top: 0.2rem;">Direct answers to Problem Statement 5 with operational mechanisms and projected metrics</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    pr1, pr2, pr3 = st.columns(3)
+
+    with pr1:
+        st.markdown("""
+            <div class="priority-card">
+                <div class="priority-tag">Priority 1 &bull; Dining Decongestion</div>
+                <div class="priority-title">Decentralised Locker Pick-up Hubs</div>
+                <div class="priority-row">
+                    <div class="priority-badge-why">WHY</div>
+                    <div class="priority-text">
+                        Main Canteen averages a <span style="color:#FF8533; font-weight:600;">158-student queue</span> between 11 AM&ndash;3 PM, inflating service time to 8.4 min and collapsing satisfaction to <span style="color:#FF5252; font-weight:600;">1.50 / 5.0</span> &mdash; the lowest recorded value campus-wide.
+                    </div>
+                </div>
+                <div class="priority-row">
+                    <div class="priority-badge-how">HOW</div>
+                    <div class="priority-text">
+                        Deploy mobile pick-up lockers at <b style="color:#FFFFFF;">Tech Park &amp; University Library</b>, routing 40% of canteen orders via pre-order kiosks. Stagger dismissal bells by 15-minute intervals between academic blocks.
+                    </div>
+                </div>
+                <div class="priority-impact-box">
+                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase; letter-spacing:0.06em;">Projected Impact</div>
+                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
+                        Queue &darr; <b style="color:#4CAF50;">40%</b> &bull; Satisfaction &uarr; <b style="color:#4CAF50;">1.50 &rarr; &gt;3.50</b> &bull; Critical incidents &darr; <b style="color:#4CAF50;">~60%</b>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with pr2:
+        st.markdown("""
+            <div class="priority-card">
+                <div class="priority-tag">Priority 2 &bull; Transit Rebalancing</div>
+                <div class="priority-title">Dynamic Shuttle Dispatch System</div>
+                <div class="priority-row">
+                    <div class="priority-badge-why">WHY</div>
+                    <div class="priority-text">
+                        Shuttle demand at Tech Park &amp; Main Gate hits <span style="color:#FF8533; font-weight:600;">136 passengers</span> against a fixed capacity of 50, creating <span style="color:#FF5252; font-weight:600;">139% occupancy overload</span> and 10.2 min average waits during transition peaks.
+                    </div>
+                </div>
+                <div class="priority-row">
+                    <div class="priority-badge-how">HOW</div>
+                    <div class="priority-text">
+                        Re-route idle shuttles from <b style="color:#FFFFFF;">Admin Block &amp; Medical Centre</b> (demand: 52&ndash;57) into dedicated express corridors serving Tech Park &rarr; Main Gate &rarr; Hostel Zone during <b style="color:#FFFFFF;">11 AM&ndash;3 PM</b> peak windows.
+                    </div>
+                </div>
+                <div class="priority-impact-box">
+                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase; letter-spacing:0.06em;">Projected Impact</div>
+                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
+                        Occupancy &darr; to <b style="color:#4CAF50;">&lt;100%</b> &bull; Wait time &darr; <b style="color:#4CAF50;">10.2 &rarr; &lt;5 min</b> &bull; Transit Critical incidents &darr; <b style="color:#4CAF50;">~55%</b>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with pr3:
+        st.markdown("""
+            <div class="priority-card">
+                <div class="priority-tag">Priority 3 &bull; Gate Flow &amp; Infrastructure</div>
+                <div class="priority-title">Weather-Adaptive Micro-Staggering</div>
+                <div class="priority-row">
+                    <div class="priority-badge-why">WHY</div>
+                    <div class="priority-text">
+                        Main Gate records <span style="color:#FF8533; font-weight:600;">141 vehicles/hr</span> colliding with simultaneous pedestrian surges. Rainy conditions further compress peaks, amplifying the <span style="color:#FF5252; font-weight:600;">30.3%</span> share of campus-wide Critical incidents.
+                    </div>
+                </div>
+                <div class="priority-row">
+                    <div class="priority-badge-how">HOW</div>
+                    <div class="priority-text">
+                        Stagger <b style="color:#FFFFFF;">Tech Park dismissals by 12 minutes</b> from adjacent blocks. Deploy an IoT sensor weather-triggered <b style="color:#FFFFFF;">rain-mode shuttle loop</b> to redirect vehicle entry to secondary gates under adverse conditions.
+                    </div>
+                </div>
+                <div class="priority-impact-box">
+                    <div style="font-size:0.7rem; color:#A0A0A0; text-transform:uppercase; letter-spacing:0.06em;">Projected Impact</div>
+                    <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.25rem; line-height:1.5;">
+                        Gate gridlock &darr; <b style="color:#4CAF50;">65%</b> &bull; Rain-day Critical rate &darr; <b style="color:#4CAF50;">~48%</b> &bull; Pedestrian clear-time &darr; <b style="color:#4CAF50;">~4 min</b>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # Executive Synthesis Callout Box
+    st.markdown("""
+        <div style="background-color:#1A1A1A; border:1px solid #2A2A2A; border-left:4px solid #FF6B00; border-radius:4px; padding:1rem 1.25rem; margin-top:1.5rem;">
+            <div style="font-size:0.78rem; font-weight:700; color:#FF8533; text-transform:uppercase; letter-spacing:0.06em;">Executive Synthesis</div>
             <div style="font-size:0.88rem; color:#FFFFFF; margin-top:0.4rem; line-height:1.6;">
-                These three interventions target <b>asynchronous scheduling</b>, <b>static fleet allocation</b>,
-                and <b>weather-blind infrastructure</b> &mdash; the three root causes responsible for
-                over <b style='color:#FF8533;'>67% of all Critical congestion events</b> in the CampusPulse dataset.
-                None require new capital construction; all are deployable within a single semester using
-                existing campus IoT, fleet, and scheduling infrastructure.
+                These three interventions target <b>asynchronous scheduling</b>, <b>static fleet allocation</b>, and <b>weather-blind infrastructure</b> &mdash; the three root causes responsible for over <b style='color:#FF8533;'>67% of all Critical congestion events</b> in the CampusPulse dataset. None require new capital construction; all are deployable within a single semester using existing campus IoT, fleet, and scheduling infrastructure.
             </div>
         </div>
     """, unsafe_allow_html=True)
+
+    # ── Bottleneck Deep-Dive & Statistical Evidence ────────────────────────────
+    st.markdown("""
+        <div style="margin-top: 2.2rem; margin-bottom: 0.9rem;">
+            <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF;">🔬 Bottleneck Deep-Dive &amp; Statistical Correlation Evidence</div>
+            <div style="font-size: 0.82rem; color: #A0A0A0; margin-top: 0.2rem;">Empirical validation of bottleneck drivers across campus dining and transit operations</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    canteen_sub = df_raw[df_raw['Zone'] == 'Main Canteen'].dropna(subset=['Canteen_Queue_Length', 'Student_Satisfaction'])
+    r_canteen = canteen_sub['Canteen_Queue_Length'].corr(canteen_sub['Student_Satisfaction'])
+
+    shuttle_sub = df_raw.dropna(subset=['Shuttle_Occupancy_Pct', 'Avg_Shuttle_Wait_Min'])
+    r_shuttle = shuttle_sub['Shuttle_Occupancy_Pct'].corr(shuttle_sub['Avg_Shuttle_Wait_Min'])
+
+    bc1, bc2, bc3 = st.columns([1.4, 1.4, 1.2])
+
+    with bc1:
+        st.markdown(f"""
+            <div class="kpi-container accent-border" style="border-left-color:#FF4500;">
+                <div class="kpi-label">Queue → Satisfaction Correlation</div>
+                <div class="kpi-value" style="color:#FF8533;">r = {r_canteen:.3f}</div>
+                <div class="kpi-subtext">Strong negative relationship — every additional <b>10-person queue</b> predicts a <b>~0.08 drop</b> in satisfaction.</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with bc2:
+        st.markdown(f"""
+            <div class="kpi-container accent-border" style="border-left-color:#FF8533;">
+                <div class="kpi-label">Occupancy → Wait Time Correlation</div>
+                <div class="kpi-value" style="color:#FF8533;">r = {r_shuttle:.3f}</div>
+                <div class="kpi-subtext">Strong positive relationship — shuttles running at <b>&gt;130% capacity</b> show <b>2.4× longer</b> average wait times.</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with bc3:
+        st.markdown("""
+            <div class="kpi-container" style="background:#1E1E1E; border:1px solid #2A2A2A;">
+                <div class="kpi-label" style="color:#FF6B00;">Interpretation Key</div>
+                <div style="font-size:0.8rem; color:#C0C0C0; line-height:1.6; margin-top:0.3rem;">
+                    |r| &gt; 0.80 &nbsp;→&nbsp; <b style='color:#FF4500;'>Strong</b><br>
+                    |r| 0.60–0.80 → <b style='color:#F9A825;'>Moderate</b><br>
+                    |r| &lt; 0.40 &nbsp;→&nbsp; <b style='color:#A0A0A0;'>Weak</b>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='margin-bottom:1.2rem;'></div>", unsafe_allow_html=True)
+
+    bot_col1, bot_col2 = st.columns([1.35, 1.65])
+
+    with bot_col1:
+        st.markdown("""
+            <div class="content-panel">
+                <div class="panel-heading">Canteen Queue vs. Student Satisfaction</div>
+                <div class="panel-subheading">Main Canteen records — orange OLS regression line</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        canteen_plot = canteen_sub.sample(min(600, len(canteen_sub)), random_state=7)
+        fig_corr = px.scatter(
+            canteen_plot,
+            x='Canteen_Queue_Length',
+            y='Student_Satisfaction',
+            opacity=0.55,
+            color_discrete_sequence=['#FF6B00'],
+            labels={'Canteen_Queue_Length': 'Queue Length (persons)',
+                    'Student_Satisfaction': 'Student Satisfaction (1–5)'},
+            template='plotly_dark',
+        )
+
+        if len(canteen_plot) > 1:
+            m_c, b_c = np.polyfit(
+                canteen_plot['Canteen_Queue_Length'],
+                canteen_plot['Student_Satisfaction'], 1)
+            xq = np.linspace(canteen_plot['Canteen_Queue_Length'].min(),
+                             canteen_plot['Canteen_Queue_Length'].max(), 80)
+            fig_corr.add_trace(go.Scatter(
+                x=xq, y=m_c * xq + b_c,
+                mode='lines', name='OLS Trend',
+                line=dict(color='#FF4500', width=2.5),
+                showlegend=True,
+            ))
+
+        fig_corr.update_layout(
+            paper_bgcolor='#1E1E1E', plot_bgcolor='#1E1E1E',
+            font=dict(family='Inter, sans-serif', color='#FFFFFF', size=11),
+            margin=dict(l=40, r=20, t=20, b=40),
+            height=360,
+            xaxis=dict(gridcolor='#2A2A2A'),
+            yaxis=dict(gridcolor='#2A2A2A'),
+            legend=dict(font=dict(size=10), bgcolor='#1E1E1E'),
+        )
+        st.plotly_chart(fig_corr, use_container_width=True)
+
+    with bot_col2:
+        st.markdown("""
+            <div class="content-panel">
+                <div class="panel-heading">Shuttle Demand vs Capacity by Zone</div>
+                <div class="panel-subheading">Orange bars = actual demand &nbsp;|&nbsp; Dashed line = nominal capacity ceiling</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        shuttle_zone_agg = filtered_df.groupby('Zone').agg(
+            Avg_Demand=('Shuttle_Demand', 'mean'),
+            Avg_Capacity=('Shuttle_Capacity', 'mean'),
+        ).reset_index().sort_values('Avg_Demand', ascending=False)
+
+        fig_sh_vs = go.Figure()
+        fig_sh_vs.add_trace(go.Bar(
+            x=shuttle_zone_agg['Zone'],
+            y=shuttle_zone_agg['Avg_Demand'],
+            name='Shuttle Demand',
+            marker_color='#FF6B00',
+        ))
+        fig_sh_vs.add_trace(go.Bar(
+            x=shuttle_zone_agg['Zone'],
+            y=shuttle_zone_agg['Avg_Capacity'],
+            name='Shuttle Capacity',
+            marker_color='#3A3A3A',
+            marker_line=dict(color='#A0A0A0', width=1.5),
+        ))
+
+        nominal_cap = shuttle_zone_agg['Avg_Capacity'].median()
+        fig_sh_vs.add_hline(
+            y=nominal_cap,
+            line_dash='dash',
+            line_color='#FFFFFF',
+            line_width=1.5,
+            annotation_text=f'Median Capacity ({nominal_cap:.0f})',
+            annotation_position='top right',
+            annotation_font_color='#A0A0A0',
+            annotation_font_size=10,
+        )
+
+        fig_sh_vs.update_layout(
+            template='plotly_dark',
+            paper_bgcolor='#1E1E1E',
+            plot_bgcolor='#1E1E1E',
+            font=dict(family='Inter, sans-serif', color='#FFFFFF', size=11),
+            margin=dict(l=20, r=20, t=20, b=80),
+            height=360,
+            barmode='group',
+            bargap=0.25,
+            xaxis=dict(tickangle=-30, gridcolor='#2A2A2A'),
+            yaxis=dict(title='Avg Passengers / Slot', gridcolor='#2A2A2A'),
+            legend=dict(orientation='h', y=1.08, x=0.5, xanchor='center',
+                        font=dict(size=10), bgcolor='#1E1E1E'),
+        )
+        st.plotly_chart(fig_sh_vs, use_container_width=True)
+
+    # ── Collapsible Dataset Health & Zone Distribution Report ─────────────────
+    with st.expander("📋 Dataset Integrity & Zone Distribution Report", expanded=False):
+        total_raw = len(df_raw)
+        total_filtered = len(filtered_df)
+        imputed_weather = 96
+        imputed_sat     = 120
+        imputed_veh     = 72
+
+        ic1, ic2, ic3, ic4, ic5 = st.columns(5)
+        for col, label, val, sub in [
+            (ic1, "Total Logs",        f"{total_raw:,}",        "full dataset"),
+            (ic2, "Active Scope",      f"{total_filtered:,}",   "post-filter"),
+            (ic3, "Weather Imputed",   f"{imputed_weather}",    "filled → 'Clear'"),
+            (ic4, "Satisfaction Fixed",f"{imputed_sat}",        "filled → median"),
+            (ic5, "Vehicle Imputed",   f"{imputed_veh}",        "filled → median"),
+        ]:
+            col.markdown(f"""
+                <div class="kpi-container accent-border">
+                    <div class="kpi-label">{label}</div>
+                    <div class="kpi-value" style="font-size:1.5rem;">{val}</div>
+                    <div class="kpi-subtext">{sub}</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("<div style='margin-top:1rem;'></div>", unsafe_allow_html=True)
+
+        stat_cols = ['Student_Footfall','Vehicle_Count','Shuttle_Demand',
+                     'Shuttle_Occupancy_Pct','Canteen_Queue_Length',
+                     'Avg_Shuttle_Wait_Min','Student_Satisfaction']
+        summary_df = filtered_df[stat_cols].describe().round(2).T
+        summary_df.index.name = "Metric"
+        st.dataframe(summary_df, use_container_width=True)
+
+        st.markdown("<div style='margin:1.2rem 0 0.4rem 0; font-size:0.88rem; font-weight:600; color:#FFFFFF;'>Congestion Level Breakdown by Zone</div>", unsafe_allow_html=True)
+
+        level_order = ['Low', 'Moderate', 'High', 'Critical']
+        cong_zone = filtered_df.groupby(['Zone', 'Congestion_Level']).size().reset_index(name='Count')
+        cong_zone_pct = cong_zone.copy()
+        totals = cong_zone.groupby('Zone')['Count'].transform('sum')
+        cong_zone_pct['Pct'] = (cong_zone['Count'] / totals * 100).round(1)
+
+        cong_color_map = {
+            'Low':      '#1B5E20',
+            'Moderate': '#F9A825',
+            'High':     '#E64A19',
+            'Critical': '#FF4500',
+        }
+
+        fig_cong_zone = px.bar(
+            cong_zone_pct,
+            x='Pct',
+            y='Zone',
+            color='Congestion_Level',
+            orientation='h',
+            barmode='stack',
+            category_orders={'Congestion_Level': level_order},
+            color_discrete_map=cong_color_map,
+            text='Pct',
+            labels={'Pct': 'Share (%)', 'Zone': '', 'Congestion_Level': 'Severity'},
+            template='plotly_dark',
+        )
+        fig_cong_zone.update_traces(
+            texttemplate='%{text:.0f}%',
+            textposition='inside',
+            insidetextanchor='middle',
+            textfont=dict(size=10, color='#FFFFFF'),
+        )
+        fig_cong_zone.update_layout(
+            paper_bgcolor='#1E1E1E',
+            plot_bgcolor='#1E1E1E',
+            font=dict(family='Inter, sans-serif', color='#FFFFFF', size=11),
+            margin=dict(l=10, r=20, t=20, b=30),
+            height=340,
+            xaxis=dict(range=[0, 100], ticksuffix='%', gridcolor='#2A2A2A'),
+            yaxis=dict(categoryorder='total ascending', gridcolor='#2A2A2A'),
+            legend=dict(orientation='h', y=1.06, x=0.5, xanchor='center',
+                        font=dict(size=10), bgcolor='#1E1E1E'),
+        )
+        st.plotly_chart(fig_cong_zone, use_container_width=True)
+
+        st.markdown("<div style='margin:1.2rem 0 0.4rem 0; font-size:0.88rem; font-weight:600; color:#FFFFFF;'>Hourly Footfall &amp; Vehicle Activity</div>", unsafe_allow_html=True)
+        hourly_ts = filtered_df.groupby('Hour').agg(
+            Avg_Footfall=('Student_Footfall',  'mean'),
+            Avg_Vehicles=('Vehicle_Count', 'mean'),
+        ).reset_index()
+
+        fig_ts = go.Figure()
+        fig_ts.add_trace(go.Scatter(
+            x=hourly_ts['Hour'], y=hourly_ts['Avg_Footfall'],
+            name='Student Footfall',
+            mode='lines+markers',
+            line=dict(color='#FF6B00', width=2.5),
+            marker=dict(size=7, color='#FF6B00'),
+            fill='tozeroy',
+            fillcolor='rgba(255,107,0,0.08)',
+        ))
+        fig_ts.add_trace(go.Scatter(
+            x=hourly_ts['Hour'], y=hourly_ts['Avg_Vehicles'],
+            name='Vehicle Count',
+            mode='lines+markers',
+            line=dict(color='#E0E0E0', width=2, dash='dot'),
+            marker=dict(size=6, color='#E0E0E0'),
+        ))
+        fig_ts.update_layout(
+            template='plotly_dark',
+            paper_bgcolor='#1E1E1E',
+            plot_bgcolor='#1E1E1E',
+            font=dict(family='Inter, sans-serif', color='#FFFFFF', size=11),
+            margin=dict(l=40, r=20, t=20, b=40),
+            height=280,
+            xaxis=dict(title='Hour of Day', dtick=1, gridcolor='#2A2A2A'),
+            yaxis=dict(title='Average Count', gridcolor='#2A2A2A'),
+            legend=dict(orientation='h', y=1.08, x=0.5, xanchor='center'),
+        )
+        st.plotly_chart(fig_ts, use_container_width=True)
+
 
 
 # ==============================================================================
