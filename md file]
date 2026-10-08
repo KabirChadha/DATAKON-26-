@@ -1,0 +1,66 @@
+# AGENT PLAN: CampusPulse Smart Operations Streamlit App
+
+## Objective
+Build a dynamic, interactive Streamlit analytics dashboard for SRMIST CampusPulse dataset.
+
+---
+
+## Agent Operational Rules (STRICT - DO NOT HARDCODE)
+1. **Dynamic Dataset Inspection**:
+   - Inspect `SRMIST_CampusPulse_Synthetic_Dataset.csv` programmatically.
+   - Automatically detect column names, data types, categorical values, and numeric ranges.
+   - Do NOT hardcode list items or specific category strings unless fallback values are explicitly needed.
+
+2. **Data Cleaning & Resiliency**:
+   - Fill missing values dynamically using median for numeric columns and mode/default values for text columns.
+   - Cast date/time fields dynamically if detected.
+
+3. **Feature Engineering**:
+   - Programmatically derive metric columns if underlying columns exist:
+     - `Shuttle_Deficit = Shuttle_Demand - Shuttle_Capacity`
+     - `Bottleneck_Index = (Student_Footfall * Class_Transition_Intensity) / (Student_Satisfaction + 0.1)`
+
+4. **Interactive What-If Simulation**:
+   - Provide dynamic sliders that scale capacity/demand metrics programmatically rather than outputting static string text.
+
+---
+
+## Technical Stack
+- **Framework**: Streamlit (`streamlit`)
+- **Data Engine**: Pandas (`pandas`), NumPy (`numpy`)
+- **Charts**: Plotly Express (`plotly.express`)
+
+---
+
+## Dashboard Architecture
+
+### 1. Header & Dynamic Data Loader
+- Streamlit page config: Wide mode, custom title (`CampusPulse | Operations Analytics`).
+- `@st.cache_data` enabled function loading `SRMIST_CampusPulse_Synthetic_Dataset.csv`.
+
+### 2. Sidebar Controls
+- Multiselect for `Zone` (populated dynamically from `df['Zone'].unique()`).
+- Multiselect for `Congestion_Level` (populated dynamically from `df['Congestion_Level'].unique()`).
+- What-If Scenario Slider: "Simulate Shuttle Capacity Increase (%)" (Range: `0%` to `50%`, default `0%`).
+
+### 3. Key Metric Cards (`st.columns(4)`)
+- **Total Records Tracked**: Count of filtered rows.
+- **Avg Shuttle Wait Time**: Calculated dynamically based on simulator input.
+- **Max Canteen Queue**: Peak value detected in `Canteen_Queue_Length`.
+- **Avg Student Satisfaction**: Mean score out of 5.0.
+
+### 4. Interactive Visualization Tabs
+- **Tab 1: Footfall & Congestion**
+  - Plotly bar chart: Footfall vs. Congestion Level grouped by Zone.
+  - Plotly scatter chart: Class Transition Intensity vs. Footfall.
+- **Tab 2: Transit & Bottlenecks**
+  - Plotly box plot: Shuttle Supply/Demand Deficit across Zones.
+  - Plotly density heatmap: Service Time vs. Queue Length.
+- **Tab 3: Strategic Recommendations**
+  - Render 3 data-backed operational solutions directly targeting campus efficiency and student experience.
+
+---
+
+## Success Criteria & Verification
+- Run `py -m streamlit run app.py` without throwing KeyError or missing column exceptions.
+- Sliders and multiselect filters update all charts and metrics simultaneously in real time.
