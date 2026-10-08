@@ -763,40 +763,66 @@ with tab_zones:
     col_z1, col_z2 = st.columns([1.6, 1.4])
 
     with col_z1:
+        sorted_zones = zone_metrics.sort_values('Avg_Footfall', ascending=True).copy()
+        sorted_zones['Critical_Pct_Label'] = sorted_zones['Critical_Rate'].apply(lambda v: f"{v:.1f}%")
+
         fig_zone_bar = px.bar(
-            zone_metrics.sort_values('Avg_Footfall', ascending=True),
+            sorted_zones,
             x='Avg_Footfall',
             y='Zone',
             orientation='h',
             color='Critical_Rate',
+            text='Critical_Pct_Label',
             color_continuous_scale=[[0, '#1E1E1E'], [0.5, '#FF8533'], [1.0, '#D32F2F']],
             labels={'Avg_Footfall': 'Avg Student Footfall', 'Critical_Rate': 'Critical %', 'Zone': ''}
         )
+        fig_zone_bar.update_traces(
+            textposition='outside',
+            cliponaxis=False,
+            textfont=dict(color='#FFFFFF', size=11, family='Inter, sans-serif')
+        )
+        max_ff = sorted_zones['Avg_Footfall'].max() if not sorted_zones.empty else 100
         fig_zone_bar.update_layout(**PLOTLY_LAYOUT_DEFAULTS)
         fig_zone_bar.update_layout(
             height=360,
+            xaxis=dict(range=[0, max_ff * 1.15], title='Avg Student Footfall'),
             coloraxis_colorbar=dict(title="Critical %", tickfont=dict(color='#A0A0A0'))
         )
         st.plotly_chart(fig_zone_bar, use_container_width=True)
 
     with col_z2:
+        bubble_df = zone_metrics.copy()
+        bubble_df['Bubble_Size'] = bubble_df['Critical_Rate'].apply(lambda x: max(float(x), 8.0))
+
         fig_zone_bubble = px.scatter(
-            zone_metrics,
+            bubble_df,
             x='Avg_Footfall',
             y='Avg_Satisfaction',
-            size='Critical_Rate',
-            text='Zone',
+            size='Bubble_Size',
+            size_max=32,
+            hover_name='Zone',
+            hover_data={
+                'Avg_Footfall': ':.1f',
+                'Avg_Satisfaction': ':.2f',
+                'Avg_Vehicles': ':.1f',
+                'Critical_Rate': ':.1f%',
+                'Bubble_Size': False,
+            },
             color='Avg_Vehicles',
             color_continuous_scale=[[0, '#424242'], [1, '#FF6B00']],
             labels={
-                'Avg_Footfall': 'Avg Footfall',
+                'Avg_Footfall': 'Avg Student Footfall',
                 'Avg_Satisfaction': 'Avg Student Satisfaction',
-                'Avg_Vehicles': 'Avg Vehicles'
+                'Avg_Vehicles': 'Avg Vehicles',
+                'Critical_Rate': 'Critical Congestion %'
             }
         )
-        fig_zone_bubble.update_traces(textposition='top center', textfont=dict(color='#FFFFFF', size=10))
         fig_zone_bubble.update_layout(**PLOTLY_LAYOUT_DEFAULTS)
-        fig_zone_bubble.update_layout(height=360)
+        fig_zone_bubble.update_layout(
+            height=360,
+            xaxis=dict(range=[150, 750], title='Avg Student Footfall'),
+            yaxis=dict(range=[1.0, 4.5], title='Avg Student Satisfaction (1-5)'),
+        )
         st.plotly_chart(fig_zone_bubble, use_container_width=True)
 
     st.markdown("<div style='font-size: 0.85rem; font-weight: 600; color: #FFFFFF; margin: 1rem 0 0.5rem 0;'>Detailed Sector Data Table</div>", unsafe_allow_html=True)
@@ -1695,8 +1721,8 @@ The following recommendations are derived exclusively from statistical patterns 
             paper_bgcolor="#121212",
             plot_bgcolor="#121212",
             font=dict(family="Inter, sans-serif", color="#FFFFFF"),
-            margin=dict(l=30, r=30, t=60, b=20),
-            height=260,
+            margin=dict(l=30, r=40, t=50, b=40),
+            height=320,
         )
         st.plotly_chart(fig_gauge, use_container_width=True)
 
