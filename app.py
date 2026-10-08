@@ -1449,6 +1449,210 @@ with tab_priority:
             </div>
         """, unsafe_allow_html=True)
 
+    # ── 🎛️ Live Operational Impact Simulator ───────────────────────────────────
+    st.markdown("<div style='margin-top:2.5rem;'></div>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style="
+            background-color: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-top: 3px solid #FF6B00;
+            border-radius: 6px;
+            padding: 1.2rem 1.4rem 0.8rem 1.4rem;
+            margin-bottom: 1.5rem;
+        ">
+            <div style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.3rem;">
+                🎛️ Live Operational Impact Simulator
+            </div>
+            <div style="font-size: 0.82rem; color: #A0A0A0; line-height: 1.5;">
+                Adjust parameters to observe predicted campus satisfaction and wait-time improvements in real time.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    sim_left, sim_right = st.columns([1, 1.2])
+
+    # ── Baseline values from the filtered dataset ──────────────────────────────
+    baseline_canteen_queue = filtered_df['Canteen_Queue_Length'].mean()
+    baseline_service_time  = filtered_df['Avg_Service_Time_Min'].mean()
+    baseline_shuttle_wait  = filtered_df['Avg_Shuttle_Wait_Min'].mean()
+    baseline_shuttle_occ   = filtered_df['Shuttle_Occupancy_Pct'].mean()
+    baseline_satisfaction  = filtered_df['Student_Satisfaction'].mean()
+
+    # Regression coefficients derived from dataset correlations:
+    #   r = -0.841  →  canteen queue vs satisfaction
+    #   r = +0.838  →  shuttle occupancy vs wait time
+    # Using standardised regression weights:
+    sat_std   = filtered_df['Student_Satisfaction'].std()
+    queue_std = filtered_df['Canteen_Queue_Length'].std()
+    occ_std   = filtered_df['Shuttle_Occupancy_Pct'].std()
+    wait_std  = filtered_df['Avg_Shuttle_Wait_Min'].std()
+
+    # β (unstandardised): β = r * (σ_y / σ_x)
+    beta_queue_to_sat  = -0.841 * (sat_std / max(queue_std, 0.01))
+    beta_occ_to_wait   =  0.838 * (wait_std / max(occ_std, 0.01))
+
+    with sim_left:
+        st.markdown("""
+            <div style="font-size: 0.78rem; font-weight: 600; color: #FF8533;
+                        text-transform: uppercase; letter-spacing: 0.06em;
+                        margin-bottom: 0.8rem;">Control Panel</div>
+        """, unsafe_allow_html=True)
+
+        sim_diversion_pct = st.slider(
+            "Canteen Footfall Diverted to Pickup Lockers (%)",
+            min_value=0,
+            max_value=60,
+            value=30,
+            step=1,
+            format="%d%%",
+            help="Percentage of canteen demand redirected to decentralised pick-up hubs"
+        )
+
+        sim_shuttles_added = st.slider(
+            "Shuttles Dynamically Re-allocated",
+            min_value=0,
+            max_value=12,
+            value=4,
+            step=1,
+            help="Additional shuttle units routed from low-demand zones into peak corridors"
+        )
+
+        sim_weather = st.selectbox(
+            "Weather Protocol",
+            options=["Clear", "Hot", "Rainy"],
+            index=0,
+            help="Simulated weather scenario affecting congestion dynamics"
+        )
+
+    # ── Compute projected metrics ──────────────────────────────────────────────
+    # Canteen: diverting X% reduces effective queue by that fraction
+    projected_queue        = baseline_canteen_queue * (1 - sim_diversion_pct / 100)
+    queue_delta            = projected_queue - baseline_canteen_queue  # negative = improvement
+    projected_service_time = max(1.0, baseline_service_time * (1 - sim_diversion_pct / 100 * 0.75))
+
+    # Shuttle: each reallocated shuttle adds ~50 seats of capacity,
+    # reducing effective occupancy percentage
+    capacity_boost_pct     = (sim_shuttles_added * 50) / max(1, filtered_df['Shuttle_Capacity'].mean()) * 100
+    projected_occ          = max(30.0, baseline_shuttle_occ - capacity_boost_pct)
+    occ_delta              = projected_occ - baseline_shuttle_occ  # negative = improvement
+    projected_shuttle_wait = max(1.0, baseline_shuttle_wait + beta_occ_to_wait * occ_delta)
+
+    # Weather modifier
+    weather_modifier = {"Clear": 0.0, "Hot": -0.08, "Rainy": -0.18}
+    weather_wait_mod = {"Clear": 0.0, "Hot": 0.4, "Rainy": 1.2}
+    weather_svc_mod  = {"Clear": 0.0, "Hot": 0.2, "Rainy": 0.5}
+
+    # Overall satisfaction projection
+    projected_satisfaction = (
+        baseline_satisfaction
+        + beta_queue_to_sat * queue_delta
+        + weather_modifier.get(sim_weather, 0.0)
+    )
+    projected_satisfaction = round(min(5.0, max(0.0, projected_satisfaction)), 2)
+
+    # Apply weather mods to wait / service times
+    projected_shuttle_wait = round(max(1.0, projected_shuttle_wait + weather_wait_mod.get(sim_weather, 0.0)), 1)
+    projected_service_time = round(max(1.0, projected_service_time + weather_svc_mod.get(sim_weather, 0.0)), 1)
+
+    with sim_right:
+        st.markdown("""
+            <div style="font-size: 0.78rem; font-weight: 600; color: #FF8533;
+                        text-transform: uppercase; letter-spacing: 0.06em;
+                        margin-bottom: 0.8rem;">Projected Outcomes</div>
+        """, unsafe_allow_html=True)
+
+        # Metric cards row
+        mc1, mc2, mc3 = st.columns(3)
+
+        svc_color = "#4CAF50" if projected_service_time < baseline_service_time else "#FF5252"
+        wait_color = "#4CAF50" if projected_shuttle_wait < baseline_shuttle_wait else "#FF5252"
+        sat_color_sim = "#4CAF50" if projected_satisfaction > baseline_satisfaction else "#FF5252"
+
+        with mc1:
+            svc_delta = projected_service_time - baseline_service_time
+            st.markdown(f"""
+                <div class="kpi-container" style="text-align:center; border-top:2px solid {svc_color};">
+                    <div class="kpi-label" style="font-size:0.68rem;">Canteen Service Time</div>
+                    <div class="kpi-value" style="font-size:1.45rem;">{projected_service_time:.1f}<span style="font-size:0.75rem; color:#A0A0A0;"> min</span></div>
+                    <div class="kpi-subtext"><span style="color:{svc_color};">{svc_delta:+.1f}</span> vs baseline</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with mc2:
+            wait_delta = projected_shuttle_wait - baseline_shuttle_wait
+            st.markdown(f"""
+                <div class="kpi-container" style="text-align:center; border-top:2px solid {wait_color};">
+                    <div class="kpi-label" style="font-size:0.68rem;">Shuttle Wait Time</div>
+                    <div class="kpi-value" style="font-size:1.45rem;">{projected_shuttle_wait:.1f}<span style="font-size:0.75rem; color:#A0A0A0;"> min</span></div>
+                    <div class="kpi-subtext"><span style="color:{wait_color};">{wait_delta:+.1f}</span> vs baseline</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with mc3:
+            sat_delta = projected_satisfaction - baseline_satisfaction
+            st.markdown(f"""
+                <div class="kpi-container" style="text-align:center; border-top:2px solid {sat_color_sim};">
+                    <div class="kpi-label" style="font-size:0.68rem;">Campus Satisfaction</div>
+                    <div class="kpi-value" style="font-size:1.45rem;">{projected_satisfaction:.2f}<span style="font-size:0.75rem; color:#A0A0A0;"> / 5.0</span></div>
+                    <div class="kpi-subtext"><span style="color:{sat_color_sim};">{sat_delta:+.2f}</span> vs baseline</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        # ── Plotly Gauge Chart ─────────────────────────────────────────────────
+        fig_gauge = go.Figure(go.Indicator(
+            mode="gauge+number+delta",
+            value=projected_satisfaction,
+            number=dict(
+                font=dict(size=38, color="#FFFFFF", family="Inter, sans-serif"),
+                suffix=" / 5.0",
+                valueformat=".2f"
+            ),
+            delta=dict(
+                reference=baseline_satisfaction,
+                valueformat=".2f",
+                increasing=dict(color="#4CAF50"),
+                decreasing=dict(color="#FF5252"),
+                font=dict(size=14)
+            ),
+            title=dict(
+                text="Predicted Campus Satisfaction Score",
+                font=dict(size=13, color="#A0A0A0", family="Inter, sans-serif")
+            ),
+            gauge=dict(
+                axis=dict(
+                    range=[0, 5],
+                    dtick=1,
+                    tickwidth=1,
+                    tickcolor="#A0A0A0",
+                    tickfont=dict(color="#A0A0A0", size=11)
+                ),
+                bar=dict(color="#FF6B00", thickness=0.35),
+                bgcolor="#2A2A2A",
+                borderwidth=0,
+                steps=[
+                    dict(range=[0, 1.0], color="#3A1010"),
+                    dict(range=[1.0, 2.0], color="#3A2010"),
+                    dict(range=[2.0, 3.0], color="#2A2A10"),
+                    dict(range=[3.0, 4.0], color="#1A2A10"),
+                    dict(range=[4.0, 5.0], color="#102A10"),
+                ],
+                threshold=dict(
+                    line=dict(color="#FF6B00", width=3),
+                    thickness=0.8,
+                    value=projected_satisfaction
+                ),
+            )
+        ))
+
+        fig_gauge.update_layout(
+            paper_bgcolor="#121212",
+            plot_bgcolor="#121212",
+            font=dict(family="Inter, sans-serif", color="#FFFFFF"),
+            margin=dict(l=30, r=30, t=60, b=20),
+            height=260,
+        )
+        st.plotly_chart(fig_gauge, use_container_width=True)
+
     st.markdown("""
         <div style="background-color:#1A1A1A; border:1px solid #2A2A2A;
                     border-left:4px solid #FF6B00; border-radius:4px;
